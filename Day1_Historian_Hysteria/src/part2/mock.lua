@@ -6,17 +6,17 @@ local mockAdapter = {
 mockAdapter.__index = mockAdapter
 
 
-function mockAdapter:calculateDistance(table1, table2)
+function mockAdapter:calculateSimilarityScore(table1, table2)
     if self.shouldFailDistanceCalc then
-        error("Mocked calculateDistance failure.")
+        error("Mocked calculateSimilarityScore failure.")
         return {}, {}
     end
 
     if self.invalidTypeInput then 
-        return functions.calculateDistance(1, '')
+        return functions.calculateSimilarityScore(1, '')
     end
 
-    return functions.calculateDistance(table1, table2)
+    return functions.calculateSimilarityScore(table1, table2)
 end
 
 function mockAdapter:new(shouldFailDistanceCalc, invalidTypeInput)

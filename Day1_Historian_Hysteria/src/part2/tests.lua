@@ -4,7 +4,7 @@ local mock      = require("mock")
 local testCases = {
     {
         description = "should succeed if expected result matches received result.",
-        expected = 11,
+        expected = 31,
         error = false,
         adapter = mock:new(false, false)
     },
@@ -22,28 +22,28 @@ local testCases = {
     }
 }
 
-local function calculateDistanceTest() 
+local function calculateSimilarityScoreTest() 
     local testInputs = {
-        {
-            4,
-            3,
-            5,
-            3,
-            9,
-            3,
-        },
         {
             3,
             4,
             2,
             1,
             3,
+            3,
+        },
+        {
+            4,
+            3,
+            5,
+            3,
+            9,
             3
         }
     }
     for _, testCase in pairs(testCases) do
         local success, result = pcall(function()
-            return testCase.adapter:calculateDistance(testInputs[1], testInputs[2])
+            return testCase.adapter:calculateSimilarityScore(testInputs[1], testInputs[2])
         end)
 
         if testCase.error and result == testCase.expected then 
@@ -62,7 +62,7 @@ end
 
 
 local function runTests()
-    calculateDistanceTest()
+    calculateSimilarityScoreTest()
 end
 
 runTests()

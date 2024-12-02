@@ -1,40 +1,12 @@
-with open('../input.txt', 'r') as file:
-    lines = file.readlines()
-
-reports = []
-
-for line in lines:
-    array = list(map(int, line.strip().split()))
-    reports.append(array)
-
-def is_increasing(arr):
-    for i in range(len(arr) - 1):
-        if arr[i] >= arr[i + 1]:
-            return False
-    return True
-
-def is_decreasing(arr):
-    for i in range(len(arr) - 1):
-        if arr[i] <= arr[i + 1]:
-            return False
-    return True
-
-def differs(x, y):
-    diff = abs(x - y)
-    return 1 <= diff <= 3
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from shared import is_safe, parse_input_into_arrays
 
 safe_reports = 0
+reports = parse_input_into_arrays('../../input.txt')
 for report in reports: 
-    is_safe = True 
-    if not (is_increasing(report) or is_decreasing(report)):
-        is_safe = False
-    else:
-        for i in range(len(report) - 1):
-            if not differs(report[i], report[i + 1]):
-                is_safe = False
-                break
-
-    if is_safe: 
+    if is_safe(report):
         safe_reports += 1
             
-print(safe_reports) 
+print("Safe reports: ", safe_reports) 

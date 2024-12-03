@@ -17,6 +17,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         }
     }
     
-    println!("{}", sum);
+    println!("Result: {}", sum);
     Ok(())
 }

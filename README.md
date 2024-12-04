@@ -5,7 +5,8 @@ My attempts at Advent Of Code 2024, where ChatGPT randomly selects a language I 
 Day 1: Lua <br>
 Day 2: Python <br>
 Day 3: Rust <br>
-Day 4: C++
+Day 4: C++ <br>
+Day 5: GoLang
 
 # Disclaimer 🎅
 

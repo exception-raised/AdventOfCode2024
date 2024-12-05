@@ -1,29 +1,21 @@
 package main
 
 import (
-	"bufio"
+	"Day5_Print_Queue/src/shared"
 	"fmt"
 	"log"
-	"os"
 	"sort"
 	"strconv"
-	"strings"
 )
 
-type Pair struct {
-	x int
-	y int
-}
-
-
 func calculateMiddlePageFromCorrected(rules []string, updates [][]string) int {
-	parsedRules := parseRules(rules)
+	parsedRules := shared.ParseRules(rules)
 	middleSum := 0
 
 	for _, update := range updates {
-		if !isUpdateValid(update, parsedRules) {
+		if !shared.IsUpdateValid(update, parsedRules) {
 			correctedUpdate := correctUpdateOrder(update, parsedRules)
-			middlePage := findMiddlePage(correctedUpdate)
+			middlePage := shared.FindMiddlePage(correctedUpdate)
 			middleP, _ := strconv.Atoi(middlePage)
 			middleSum += middleP
 		}
@@ -32,47 +24,8 @@ func calculateMiddlePageFromCorrected(rules []string, updates [][]string) int {
 	return middleSum
 }
 
-func parseRules(rules []string) []Pair {
-	parsedRules := []Pair{}
 
-	for _, rule := range rules {
-		splitRule := strings.Split(rule, "|")
-		x, err := strconv.Atoi(splitRule[0])
-		if err != nil {
-			log.Panic(err)
-		}
-		y, err := strconv.Atoi(splitRule[1])
-		if err != nil {
-			log.Panic(err)
-		}
-		parsedRules = append(parsedRules, Pair{x: x, y: y})
-	}
-
-	return parsedRules
-}
-
-func isUpdateValid(update []string, parsedRules []Pair) bool {
-	indexMap := map[int]int{}
-	for idx, pageStr := range update {
-		page, _ := strconv.Atoi(pageStr)
-		indexMap[page] = idx
-	}
-
-	for _, rule := range parsedRules {
-		idxX, existsX := indexMap[rule.x]
-		idxY, existsY := indexMap[rule.y]
-
-		if existsX && existsY {
-			if idxX > idxY {
-				return false
-			}
-		}
-	}
-
-	return true
-}
-
-func correctUpdateOrder(update []string, parsedRules []Pair) []string {
+func correctUpdateOrder(update []string, parsedRules []shared.Pair) []string {
 	intUpdate := []int{}
 	for _, pageStr := range update {
 		page, _ := strconv.Atoi(pageStr)
@@ -81,9 +34,9 @@ func correctUpdateOrder(update []string, parsedRules []Pair) []string {
 
 	sort.Slice(intUpdate, func(i, j int) bool {
 		for _, rule := range parsedRules {
-			if intUpdate[i] == rule.x && intUpdate[j] == rule.y {
+			if intUpdate[i] == rule.X && intUpdate[j] == rule.Y {
 				return true 
-			} else if intUpdate[i] == rule.y && intUpdate[j] == rule.x {
+			} else if intUpdate[i] == rule.Y && intUpdate[j] == rule.X {
 				return false 
 			}
 		}
@@ -98,50 +51,10 @@ func correctUpdateOrder(update []string, parsedRules []Pair) []string {
 	return correctedUpdate
 }
 
-func findMiddlePage(update []string) string {
-	middleIndex := len(update) / 2
-	return update[middleIndex]
-}
-
-func parseFile(filePath string) ([]string, [][]string, error) {
-	file, err := os.Open(filePath)
-	if err != nil {
-		return nil, nil, err
-	}
-	defer file.Close()
-
-	var rules []string
-	var updates [][]string
-	ruleSection := true
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if line == "" {
-			ruleSection = false
-			continue
-		}
-
-		if ruleSection {
-			rules = append(rules, line)
-		} else {
-			update := strings.Split(line, ",")
-			updates = append(updates, update)
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		return nil, nil, err
-	}
-
-	return rules, updates, nil
-}
-
 func main() {
 	filePath := "../../input.txt"
 
-	rules, updates, err := parseFile(filePath)
+	rules, updates, err := shared.ParseFile(filePath)
 	if err != nil {
 		log.Panic(err)
 	}

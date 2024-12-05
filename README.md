@@ -6,7 +6,8 @@ Day 1: Lua <br>
 Day 2: Python <br>
 Day 3: Rust <br>
 Day 4: C++ <br>
-Day 5: GoLang
+Day 5: GoLang <br>
+Day 6: Ruby
 
 # Disclaimer 🎅
 
